@@ -82,15 +82,13 @@ class PictureOfTheDayFragment : Fragment() {
     private fun renderData(data: PictureOfTheDayData) {
         when (data) {
             is PictureOfTheDayData.Success -> {
-                main_fragment_loading_layout.visibility = View.GONE
                 val serverResponseData = data.serverResponseData
                 val url = serverResponseData.url
                 podHeaderText.text = serverResponseData.date
                 podDescriptionText.text = serverResponseData.explanation
                 if (url.isNullOrEmpty()) {
                     //showError("Сообщение, что ссылка пустая")
-                    //toast("Link is empty")
-                    main_fragment_loading_layout.visibility = View.GONE
+                    toast("Link is empty")
                     main_fragment_root.showSnackBar(
                         "Link is empty",
                         getString(R.string.reload), {
@@ -107,12 +105,10 @@ class PictureOfTheDayFragment : Fragment() {
             }
             is PictureOfTheDayData.Loading -> {
                 //showLoading()
-                main_fragment_loading_layout.visibility = View.VISIBLE
             }
             is PictureOfTheDayData.Error -> {
                 //showError(data.error.message)
-                //toast(data.error.message)
-                main_fragment_loading_layout.visibility = View.GONE
+                toast(data.error.message)
                 main_fragment_root.showSnackBar(
                     data.error.toString(),
                     getString(R.string.reload), {
