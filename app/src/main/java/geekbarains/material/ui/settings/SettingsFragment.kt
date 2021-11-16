@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
 import geekbarains.material.R
@@ -26,8 +25,14 @@ class SettingsFragment : Fragment() {
             chipGroup.findViewById<Chip>(position)?.let {
                 val context = activity as MainActivity
                 when (it.text) {
-                    "Original" -> context.changeTheme(1)
-                    "Alternative" -> context.changeTheme(2)
+                    "Original" -> {
+                        context.changeTheme(1)
+                        context.setBottomNavigationSelectedItem(3)
+                    }
+                    "Alternative" -> {
+                        context.changeTheme(2)
+                        context.setBottomNavigationSelectedItem(3)
+                    }
                 }
             }
         }
