@@ -8,4 +8,8 @@
     <string name="search">Search</string>
     <string name="reload">Reload...</string>
     <string name="not_loaded">Not loaded</string>
+    <string name="photo_of_earth">Photo of Earth</string>
+    <string name="choose_theme">Choose Theme</string>
+    <string name="original">Original</string>
+    <string name="alternative">Alternative</string>
 </resources>
