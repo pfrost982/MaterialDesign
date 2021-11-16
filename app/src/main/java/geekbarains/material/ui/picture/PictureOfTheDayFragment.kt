@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import coil.api.load
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.snackbar.Snackbar
 import geekbarains.material.R
 import geekbarains.material.ui.MainActivity
 import geekbarains.material.ui.chips.ChipsFragment
@@ -21,6 +23,9 @@ import kotlinx.android.synthetic.main.main_fragment.*
 class PictureOfTheDayFragment : Fragment() {
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var podHeaderText: TextView
+    private lateinit var podDescriptionText: TextView
+
     private val viewModel: PictureOfTheDayViewModel by lazy {
         ViewModelProviders.of(this).get(PictureOfTheDayViewModel::class.java)
     }
@@ -40,6 +45,9 @@ class PictureOfTheDayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        podHeaderText = view.findViewById(R.id.bottom_sheet_description_header)
+        podDescriptionText = view.findViewById(R.id.bottom_sheet_description)
+
         setBottomSheetBehavior(view.findViewById(R.id.bottom_sheet_container))
         input_layout.setEndIconOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW).apply {
@@ -47,6 +55,9 @@ class PictureOfTheDayFragment : Fragment() {
             })
         }
         setBottomAppBar(view)
+        image_view.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -57,7 +68,8 @@ class PictureOfTheDayFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.app_bar_fav -> toast("Favourite")
-            R.id.app_bar_settings -> activity?.supportFragmentManager?.beginTransaction()?.add(R.id.container, ChipsFragment())?.addToBackStack(null)?.commit()
+            R.id.app_bar_settings -> activity?.supportFragmentManager?.beginTransaction()
+                ?.add(R.id.container, ChipsFragment())?.addToBackStack(null)?.commit()
             android.R.id.home -> {
                 activity?.let {
                     BottomNavigationDrawerFragment().show(it.supportFragmentManager, "tag")
@@ -72,9 +84,16 @@ class PictureOfTheDayFragment : Fragment() {
             is PictureOfTheDayData.Success -> {
                 val serverResponseData = data.serverResponseData
                 val url = serverResponseData.url
+                podHeaderText.text = serverResponseData.date
+                podDescriptionText.text = serverResponseData.explanation
                 if (url.isNullOrEmpty()) {
                     //showError("Сообщение, что ссылка пустая")
                     toast("Link is empty")
+                    main_fragment_root.showSnackBar(
+                        "Link is empty",
+                        getString(R.string.reload), {
+                            viewModel.getData()
+                        })
                 } else {
                     //showSuccess()
                     image_view.load(url) {
@@ -90,6 +109,12 @@ class PictureOfTheDayFragment : Fragment() {
             is PictureOfTheDayData.Error -> {
                 //showError(data.error.message)
                 toast(data.error.message)
+                main_fragment_root.showSnackBar(
+                    data.error.toString(),
+                    getString(R.string.reload), {
+                        viewModel.getData()
+                    })
+
             }
         }
     }
@@ -127,6 +152,13 @@ class PictureOfTheDayFragment : Fragment() {
             show()
         }
     }
+
+    private fun View.showSnackBar(
+        text: String,
+        actionText: String,
+        action: (View) -> Unit,
+        length: Int = Snackbar.LENGTH_INDEFINITE
+    ) = Snackbar.make(this, text, length).setAction(actionText, action).show()
 
     companion object {
         fun newInstance() = PictureOfTheDayFragment()
