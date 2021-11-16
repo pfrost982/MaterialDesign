@@ -1,4 +1,4 @@
-package geekbarains.material.ui.chips
+package geekbarains.material.ui.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,31 +8,28 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
 import geekbarains.material.R
-import kotlinx.android.synthetic.main.fragment_chips.*
+import geekbarains.material.ui.MainActivity
+import kotlinx.android.synthetic.main.fragment_settings.*
 
-class ChipsFragment : Fragment() {
+class SettingsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_chips, container, false)
+        return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chipGroup.setOnCheckedChangeListener { chipGroup, position ->
             chipGroup.findViewById<Chip>(position)?.let {
-                Toast.makeText(context, "Выбран ${it.text}", Toast.LENGTH_SHORT).show()
+                val context = activity as MainActivity
+                when (it.text) {
+                    "Original" -> context.changeTheme(1)
+                    "Alternative" -> context.changeTheme(2)
+                }
             }
-        }
-
-        chip_close.setOnCloseIconClickListener {
-            Toast.makeText(
-                context,
-                "Close is Clicked",
-                Toast.LENGTH_SHORT
-            ).show()
         }
     }
 }

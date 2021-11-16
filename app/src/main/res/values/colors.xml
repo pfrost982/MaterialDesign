@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="color_gray">#66000000</color>
+
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimaryVariant">#688C87</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="color_gray">#66000000</color>
-    <color name="loadingBackground">#CDFFFFFF</color>
+
+    <color name="colorPrimaryAlt">#90a4ae</color>
+    <color name="colorPrimaryVariantAlt">#c1d5e0</color>
+    <color name="colorPrimaryDarkAlt">#62757f</color>
+    <color name="colorAccentAlt">#7DB17F</color>
 </resources>

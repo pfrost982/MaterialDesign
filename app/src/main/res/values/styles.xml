@@ -6,5 +6,27 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="BottomAppBarColor">@color/colorPrimary</item>
+        <item name="FloatingActionButtonColor">@color/colorAccent</item>
+    </style>
+
+    <style name="AppThemeAlt" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryAlt</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkAlt</item>
+        <item name="colorAccent">@color/colorAccentAlt</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantAlt</item>
+        <item name="BottomAppBarColor">@color/colorPrimaryAlt</item>
+        <item name="FloatingActionButtonColor">@color/colorAccentAlt</item>
+    </style>
+
+    <style name="BottomSheetTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:fontFamily">@font/arch_daughter</item>
     </style>
 </resources>
