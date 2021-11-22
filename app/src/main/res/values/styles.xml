@@ -21,12 +21,28 @@
         <item name="FloatingActionButtonColor">@color/colorAccentAlt</item>
     </style>
 
-    <style name="BottomSheetTextStyle">
+    <style name="TextStyleTitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:paddingStart">10dp</item>
-        <item name="android:paddingEnd">10dp</item>
+        <item name="android:layout_marginTop">48dp</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textSize">45sp</item>
         <item name="android:fontFamily">@font/arch_daughter</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="TextStyleDescription">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/arch_daughter</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 </resources>

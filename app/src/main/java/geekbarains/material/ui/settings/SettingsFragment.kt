@@ -21,18 +21,13 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val context = activity as MainActivity
+        context.setBottomNavigationSelectedItem(3)
         chipGroup.setOnCheckedChangeListener { chipGroup, position ->
             chipGroup.findViewById<Chip>(position)?.let {
-                val context = activity as MainActivity
                 when (it.text) {
-                    "Original" -> {
-                        context.changeTheme(1)
-                        context.setBottomNavigationSelectedItem(3)
-                    }
-                    "Alternative" -> {
-                        context.changeTheme(2)
-                        context.setBottomNavigationSelectedItem(3)
-                    }
+                    "Original" -> context.changeTheme(1)
+                    "Alternative" -> context.changeTheme(2)
                 }
             }
         }

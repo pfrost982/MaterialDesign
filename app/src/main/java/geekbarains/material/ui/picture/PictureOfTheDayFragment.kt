@@ -1,28 +1,31 @@
 package geekbarains.material.ui.picture
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.transition.ChangeBounds
+import android.transition.TransitionManager
 import android.view.*
+import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import coil.api.load
 import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import geekbarains.material.R
 import geekbarains.material.ui.MainActivity
 import geekbarains.material.ui.settings.SettingsFragment
 import kotlinx.android.synthetic.main.fragment_pod.*
+import kotlinx.android.synthetic.main.fragment_pod_constraint_set_start.*
 
 class PictureOfTheDayFragment : Fragment() {
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var podHeaderText: TextView
     private lateinit var podDescriptionText: TextView
 
@@ -45,19 +48,15 @@ class PictureOfTheDayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        podHeaderText = view.findViewById(R.id.bottom_sheet_description_header)
-        podDescriptionText = view.findViewById(R.id.bottom_sheet_description)
+        podHeaderText = view.findViewById(R.id.title)
+        podDescriptionText = view.findViewById(R.id.description)
 
-        setBottomSheetBehavior(view.findViewById(R.id.bottom_sheet_container))
         input_layout.setEndIconOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse("https://en.wikipedia.org/wiki/${input_edit_text.text.toString()}")
             })
         }
         setBottomAppBar(view)
-        image_view.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -114,7 +113,6 @@ class PictureOfTheDayFragment : Fragment() {
                     getString(R.string.reload), {
                         viewModel.getData()
                     })
-
             }
         }
     }
@@ -130,6 +128,7 @@ class PictureOfTheDayFragment : Fragment() {
                 bottom_app_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
                 fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_back_fab))
                 bottom_app_bar.replaceMenu(R.menu.menu_bottom_bar_other_screen)
+                changeConstraintSet(context, R.layout.fragment_pod_constraint_set_end)
             } else {
                 isMain = true
                 bottom_app_bar.navigationIcon =
@@ -137,13 +136,19 @@ class PictureOfTheDayFragment : Fragment() {
                 bottom_app_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
                 fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_plus_fab))
                 bottom_app_bar.replaceMenu(R.menu.menu_bottom_bar)
+                changeConstraintSet(context, R.layout.fragment_pod_constraint_set_start)
             }
         }
     }
 
-    private fun setBottomSheetBehavior(bottomSheet: ConstraintLayout) {
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    private fun changeConstraintSet(context: Context, set: Int) {
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(context, set)
+        val transition = ChangeBounds()
+        transition.interpolator = AnticipateOvershootInterpolator(1.0f)
+        transition.duration = 1200
+        TransitionManager.beginDelayedTransition(constraint_set_container, transition)
+        constraintSet.applyTo(constraint_set_container)
     }
 
     private fun Fragment.toast(string: String?) {
